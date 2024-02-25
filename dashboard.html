@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students Records Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .container-fluid {
+            background-color: #06112f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            height: 500px;
+            width: 55%;
+            /* text-align: center; */
+            padding: 20px;
+            font-size: 1.1rem;
+        }
+
+        .container h1 {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .container input {
+            width: 25%;
+            font-size: 1.2rem;
+            padding: 5px;
+        }
+
+        .record-table h1 {
+            text-align: left;
+        }
+
+        #add {
+            width: 15%;
+            background-color: rgb(18, 246, 18);
+            color: white;
+            border: none;
+            outline: none;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+
+        .record-table {
+            margin-top: 20px;
+            font-family: sans-serif;
+        }
+
+        .editForm {
+            background-color: white;
+            box-shadow: 0 0 5px black;
+            width: 400px;
+            height: auto;
+            padding: 20px;
+            border-radius: 20px;
+            position: relative;
+            top: 25%;
+            left: 30%;
+           
+        }
+
+        .editForm h1 {
+            text-align: center;
+        }
+
+        .editForm input {
+            padding: 5px;
+            width: 95%;
+            margin-bottom: 15px;
+        }
+
+        .editForm button {
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            background-color: rgb(18, 246, 18);
+            color: white;
+            padding: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        .correction{
+            background-color:#040e2b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            display: none;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="container">
+            <h1>Student Registration</h1>
+            <form action="" id="expense-form">
+                <input type="text" placeholder="Name" id="name">
+                <input type="number" placeholder="Age" id="age">
+                <input type="email" name="" id="email">
+                <input type="button" name="" id="add" value="Add Record" onclick="addRow()">
+            </form>
+            <div class="record-table">
+                <h1>Records</h1>
+                <table id="myTable">
+                    <thead>
+                        <th style="width: 25%; background-color: rgb(18, 246, 18); color: white; "> Name</th>
+                        <th style="width: 10%; background-color: rgb(18, 246, 18); color: white;"> Age </th>
+                        <th style="width: 50%; background-color: rgb(18, 246, 18); color: white;"> Email</th>
+                        <th style="width: 10%; background-color: rgb(18, 246, 18); color: white;"> Edit</th>
+                        <th style="width: 25%; background-color: rgb(18, 246, 18); color: white; padding:5px 10px;">
+                            Delete</th>
+                    </thead>
+                    <tbody id="tableBody">
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="correction" id="correction">
+        <div class="editForm" id="editForm">
+            <h1>Correction Form</h1>
+            <form onsubmit="submitEditForm(); return false;">
+                <label for="editName">Name</label>
+                <input type="text" id="editName"><br>
+                <label for="editAge">Age</label>
+                <input type="number" id="editAge"><br>
+                <label for="editEmail">Email</label>
+                <input type="email" id="editEmail">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        function addRow() {
+            let name = document.getElementById('name').value;
+            let age = document.getElementById('age').value;
+            let email = document.getElementById('email').value;
+            let table = document.getElementById("tableBody");
+            let form = document.getElementById("expense-form");
+            let row = document.createElement("tr")
+            let c1 = document.createElement("td")
+            let c2 = document.createElement("td")
+            let c3 = document.createElement("td")
+            let c4 = document.createElement("td")
+            let c5 = document.createElement("td")
+            c1.innerText = `${name}`
+            c2.innerText = `${age}`
+            c3.innerText = `${email}`
+            c4.innerText = `Edit`
+            c5.innerText = `Delete`
+            row.appendChild(c1);
+            row.appendChild(c2);
+            row.appendChild(c3);
+            row.appendChild(c4);
+            row.appendChild(c5);
+            table.appendChild(row);
+            table.style.textAlign = "center";
+            c1.style.textTransform = "capitalize";
+            c4.style.backgroundColor = "yellow";
+            c4.style.textAlign = "center";
+            c4.style.color = "white";
+            c5.style.backgroundColor = "red";
+            c5.style.textAlign = "center";
+            c5.style.color = "white";
+            c5.style.cursor = "pointer";
+            c4.style.cursor = "pointer";
+
+
+
+            document.getElementById("name").value = "";
+            document.getElementById("age").value = "";
+            document.getElementById("email").value = "";
+
+            c4.addEventListener("click", function () {
+                const editForm = document.getElementById("correction");
+                editForm.style.display = "block";
+
+
+                document.getElementById('editName').value = row.cells[0].innerText;
+                document.getElementById('editAge').value = row.cells[1].innerText;
+                document.getElementById('editEmail').value = row.cells[2].innerText;
+
+                selectedRow = row;
+            });
+
+            c5.addEventListener("click", function () {
+                table.removeChild(row);
+            });
+
+
+
+        }
+        function submitEditForm() {
+            let editName = document.getElementById('editName').value;
+            let editAge = document.getElementById('editAge').value;
+            let editEmail = document.getElementById('editEmail').value;
+
+            selectedRow.cells[0].innerText = editName;
+            selectedRow.cells[1].innerText = editAge;
+            selectedRow.cells[2].innerText = editEmail;
+
+            document.getElementById('correction').style.display = 'none';
+        }
+
+
+        let addButton = document.getElementById("add");
+
+    </script>
+</body>
+
+</html>
